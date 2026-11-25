@@ -265,7 +265,7 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
     const lista = daUni.filter(r => !$('aMot').value || r.nome === $('aMot').value).map(r => ({ r, t: somaTot(r, ym) })).sort((a, b) => (b.t.valor + b.t.valorDias) - (a.t.valor + a.t.valorDias) || a.r.nome.localeCompare(b.r.nome));
     const g = lista.reduce((a, x) => ({ valor: a.valor + x.t.valor, valorDias: a.valorDias + x.t.valorDias }), { valor: 0, valorDias: 0 });
     const quando = new Date(ADM.atualizado).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', ' às');
-    $('aInfo').textContent = `${ADM.motoristas.length} motoristas · Atualizado em ${quando}`;
+    $('aInfo').textContent = `${ADM.quem ? `${ADM.quem.nome} · ${ADM.quem.funcao} · ` : ''}${ADM.motoristas.length} motoristas · Atualizado em ${quando}`;
     $('aTotL').textContent = `${ym ? nomeMes(ym) : 'Acumulado'} · ${lista.length} motorista${lista.length === 1 ? '' : 's'}`;
     $('aTotal').textContent = brl(g.valor + g.valorDias);
     $('aTotS').textContent = `Alimentação ${brl(g.valor)} · Domingos e feriados ${brl(g.valorDias)}`;
