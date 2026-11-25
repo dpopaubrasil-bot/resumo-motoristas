@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#262626">
+<meta name="robots" content="noindex,nofollow">
+<title>Meu resumo · Puxada</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{--bg:#f5f4f2;--card:#fff;--line:#dcd8d3;--soft:#f0efed;--fg:#1f1b19;--mut:#5f5752;--head:#262626;--acc:#a3261c;--acc2:#7d1c14;
+  --fd:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--fb:Barlow,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--fm:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--fb);font-size:16px;-webkit-text-size-adjust:100%}
+main{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.eyebrow{font-family:var(--fd);font-weight:600;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+h1{margin:0;font-family:var(--fd);font-weight:700;line-height:1.08}
+button,input{font:inherit}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:10px;border:0;background:var(--acc);color:#fff;font-weight:700;font-size:18px;text-decoration:none;width:100%;cursor:pointer}
+.btn:active{background:var(--acc2)}.btn[disabled]{opacity:.6}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+/* login */
+#login{flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px;padding:32px 24px;border-top:6px solid var(--acc)}
+#login h1{font-size:40px}
+#login p{margin:0;color:var(--mut)}
+form{display:flex;flex-direction:column;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.campo{display:flex;flex-direction:column;gap:6px}
+.campo label{font-family:var(--fd);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.campo input{font:500 20px var(--fm);padding:12px 14px;border:1px solid #c9c4be;border-radius:10px;background:var(--bg);color:var(--fg);min-height:50px;width:100%}
+.lembrar{display:flex;gap:10px;align-items:center;min-height:44px;font-size:15px}
+.lembrar input{width:22px;height:22px;accent-color:var(--acc)}
+#erro{color:var(--acc);font-weight:600;min-height:1.2em;margin:0}
+/* resumo */
+header{background:var(--head);color:#fff;padding:14px 18px 16px;display:flex;flex-direction:column;gap:10px;padding-top:max(14px,env(safe-area-inset-top))}
+header .topo{display:flex;justify-content:space-between;align-items:center}
+header .eyebrow{color:#f0a39b}
+#sair{background:none;border:0;color:#fff;font-weight:600;font-size:15px;min-height:44px;padding:0 4px;cursor:pointer}
+#nome{font-size:28px}
+.sub{font-size:14px;color:#d6d1cc}
+#meses{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+#meses button{flex:none;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid #6b6560;background:transparent;color:#fff;font-weight:600;font-size:15px;cursor:pointer}
+#meses button[aria-pressed=true]{background:#fff;color:var(--head);border-color:#fff;font-weight:700}
+nav{display:flex;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+nav button{flex:1;padding:14px 6px;font-weight:600;font-size:16px;color:var(--mut);background:none;border:0;border-bottom:3px solid transparent;cursor:pointer;min-height:48px}
+nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-color:var(--acc)}
+#conteudo{padding:18px 16px calc(28px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px}
+.tot{background:var(--head);color:#fff;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.tot .l{font-family:var(--fd);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#d6d1cc}
+#total{font-family:var(--fd);font-weight:700;font-size:38px;line-height:1.1}
+.tot .sm{font-size:15px;color:#d6d1cc}
+#lista{display:flex;flex-direction:column;gap:12px}
+.viagem{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.linha{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.mono{font-family:var(--fm);font-weight:600}
+.mut{font-size:14px;color:var(--mut)}
+.ref{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ref div{background:var(--soft);border-radius:10px;padding:8px;text-align:center}
+.ref small{display:block;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.ref b{font-size:20px}
+.aviso{border:1px dashed #b9b2ab;border-radius:14px;padding:12px 16px;font-size:14px;color:var(--mut)}
+.dias{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.dia{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #ebe8e4}
+.dia:last-child{border-bottom:0}
+.dia>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.vazio{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 16px;color:var(--mut);text-align:center}
+.nota{margin:0;font-size:13px;color:var(--mut);text-align:center}
+.carregando{color:var(--mut);text-align:center;margin:0}
+</style>
+</head>
+<body>
+<main>
+  <section id="login">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="eyebrow">Pau Brasil · Puxada</span>
+      <h1>Meu resumo de viagens</h1>
+      <p>Viagens, alimentação, domingos e feriados trabalhados.</p>
+    </div>
+    <form id="form" novalidate>
+      <div class="campo"><label for="cpf">CPF</label><input id="cpf" type="text" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" maxlength="14"></div>
+      <div class="campo"><label for="nasc">Data de nascimento</label><input id="nasc" type="text" inputmode="numeric" autocomplete="off" placeholder="dd/mm/aaaa" maxlength="10"></div>
+      <label class="lembrar" for="lembrar"><input id="lembrar" type="checkbox"> Lembrar neste celular</label>
+      <p id="erro" role="alert"></p>
+      <button class="btn" id="entrar" type="submit">Entrar</button>
+    </form>
+    <p class="nota">Problemas para entrar? Fale com a logística.</p>
+  </section>
+
+  <section id="resumo" hidden>
+    <header>
+      <div class="topo"><span class="eyebrow">Pau Brasil · Puxada</span><button id="sair" type="button">Sair</button></div>
+      <div style="display:flex;flex-direction:column;gap:2px"><h1 id="nome"></h1><span class="sub" id="info"></span></div>
+      <div id="meses" role="group" aria-label="Mês"></div>
+    </header>
+    <nav role="tablist">
+      <button type="button" role="tab" data-aba="viagens" aria-selected="true">Viagens e alimentação</button>
+      <button type="button" role="tab" data-aba="domingos" aria-selected="false">Domingos e feriados</button>
+    </nav>
+    <div id="conteudo">
+      <div class="tot"><span class="l" id="totL"></span><span id="total"></span><span class="sm" id="totS"></span></div>
+      <div id="lista"></div>
+      <a class="btn" id="whats" href="#" target="_blank" rel="noopener">Falar com a logística</a>
+      <p class="nota" id="nota"></p>
+    </div>
+  </section>
+</main>
+<script>
+/* Cripto do resumo dos motoristas: usado pelo painel (publica) e pelo app (lê). */
+(function (g) {
+  const dig = v => String(v == null ? '' : v).replace(/\D/g, '');
+  function normCpf(v) {
+    let s = typeof v === 'number' ? String(Math.round(v)) : dig(v);
+    if (!s || s.length > 11) return null;
+    s = s.padStart(11, '0');
+    if (/^(\d)\1{10}$/.test(s)) return null;
+    const dv = n => { let t = 0; for (let i = 0; i < n; i++) t += +s[i] * (n + 1 - i); const r = t % 11; return r < 2 ? 0 : 11 - r; };
+    return dv(9) === +s[9] && dv(10) === +s[10] ? s : null;
+  }
+  const p2 = n => String(n).padStart(2, '0');
+  function valida(d, m, a) {
+    if (!(a >= 1900 && a <= 2100 && m >= 1 && m <= 12 && d >= 1)) return null;
+    const ult = new Date(Date.UTC(a, m, 0)).getUTCDate();
+    return d <= ult ? p2(d) + p2(m) + a : null;
+  }
+  function normNasc(v) {
+    if (v == null || v === '') return null;
+    if (v instanceof Date) return isNaN(v) ? null : valida(v.getUTCDate(), v.getUTCMonth() + 1, v.getUTCFullYear());
+    if (typeof v === 'number') { const d = new Date(Date.UTC(1899, 11, 30) + Math.round(v) * 864e5); return valida(d.getUTCDate(), d.getUTCMonth() + 1, d.getUTCFullYear()); }
+    const s = String(v).trim();
+    let m = s.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/);
+    if (m) return valida(+m[1], +m[2], +m[3]);
+    m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return valida(+m[3], +m[2], +m[1]);
+    m = s.match(/^(\d{2})(\d{2})(\d{4})$/);
+    if (m) return valida(+m[1], +m[2], +m[3]);
+    return null;
+  }
+  const b64 = u8 => { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
+  const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const cr = () => g.crypto.subtle;
+  async function derivar(cpf, nasc, saltB64, iter) {
+    const base = await cr().importKey('raw', new TextEncoder().encode(cpf + '|' + nasc), 'PBKDF2', false, ['deriveBits']);
+    const bits = new Uint8Array(await cr().deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: unb64(saltB64), iterations: iter }, base, 512));
+    const key = await cr().importKey('raw', bits.slice(0, 32), 'AES-GCM', false, ['encrypt', 'decrypt']);
+    const id = Array.from(bits.slice(32), b => b.toString(16).padStart(2, '0')).join('');
+    return { key, id };
+  }
+  async function cifrar(obj, key) {
+    const iv = g.crypto.getRandomValues(new Uint8Array(12));
+    const ct = new Uint8Array(await cr().encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(obj))));
+    return { iv: b64(iv), ct: b64(ct) };
+  }
+  async function decifrar(env, key) {
+    const pt = await cr().decrypt({ name: 'AES-GCM', iv: unb64(env.iv) }, key, unb64(env.ct));
+    return JSON.parse(new TextDecoder().decode(pt));
+  }
+  const novoSalt = () => b64(g.crypto.getRandomValues(new Uint8Array(16)));
+  g.CRIPTO = { normCpf, normNasc, derivar, cifrar, decifrar, novoSalt, ITER: 210000 };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const brl = v => (+v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  const nomeMes = ym => `${MESES[+ym.slice(5, 7) - 1]} ${ym.slice(0, 4)}`;
+  const CHAVE = 'resumo.login';
+  const guardar = v => { try { v ? localStorage.setItem(CHAVE, JSON.stringify(v)) : localStorage.removeItem(CHAVE); } catch (e) {} };
+  const lido = () => { try { return JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch (e) { return null; } };
+  let R = null, mes = null, aba = 'viagens';
+
+  // máscaras
+  const mascara = (el, f) => el.addEventListener('input', () => { el.value = f(el.value.replace(/\D/g, '')); });
+  mascara($('cpf'), d => d.slice(0, 11).replace(/^(\d{3})(\d)/, '$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d)/, '.$1-$2'));
+  mascara($('nasc'), d => d.slice(0, 8).replace(/^(\d{2})(\d)/, '$1/$2').replace(/^(\d{2})\/(\d{2})(\d)/, '$1/$2/$3'));
+
+  async function abrirResumo(cpf, nasc) {
+    const cfgR = await fetch(`dados/config.json?v=${Date.now()}`, { cache: 'no-store' });
+    if (!cfgR.ok) throw new Error('indisponivel');
+    const cfg = await cfgR.json();
+    const { key, id } = await CRIPTO.derivar(cpf, nasc, cfg.salt, cfg.iter);
+    const r = await fetch(`dados/${id}.json?v=${cfg.atualizado}`, { cache: 'no-store' });
+    if (r.status === 404) throw new Error('nao_confere');
+    if (!r.ok) throw new Error('indisponivel');
+    try { return await CRIPTO.decifrar(await r.json(), key); } catch (e) { throw new Error('nao_confere'); }
+  }
+  async function entrar(cpfTxt, nascTxt, lembrar, auto) {
+    const cpf = CRIPTO.normCpf(cpfTxt), nasc = CRIPTO.normNasc(nascTxt);
+    $('erro').textContent = '';
+    if (!cpf) { $('erro').textContent = 'Confira o CPF.'; return; }
+    if (!nasc) { $('erro').textContent = 'Digite a data de nascimento como dd/mm/aaaa.'; return; }
+    $('entrar').disabled = true; $('entrar').textContent = 'Entrando…';
+    try {
+      R = await abrirResumo(cpf, nasc);
+      if (lembrar) guardar({ cpf, nasc });
+      mes = R.meses.length ? R.meses[R.meses.length - 1].ym : null; aba = 'viagens';
+      $('login').hidden = true; $('resumo').hidden = false; render(); window.scrollTo(0, 0);
+    } catch (e) {
+      if (auto && e.message === 'nao_confere') guardar(null);
+      $('erro').textContent = e.message === 'nao_confere' ? 'CPF ou data de nascimento não conferem.' : 'Não foi possível carregar agora. Confira a internet e tente de novo.';
+    } finally { $('entrar').disabled = false; $('entrar').textContent = 'Entrar'; }
+  }
+  $('form').addEventListener('submit', e => { e.preventDefault(); entrar($('cpf').value, $('nasc').value, $('lembrar').checked); });
+  $('sair').addEventListener('click', () => { guardar(null); R = null; $('cpf').value = ''; $('nasc').value = ''; $('lembrar').checked = false; $('erro').textContent = ''; $('resumo').hidden = true; $('login').hidden = false; });
+  document.querySelector('nav').addEventListener('click', e => { const b = e.target.closest('[data-aba]'); if (b) { aba = b.dataset.aba; render(); } });
+  $('meses').addEventListener('click', e => { const b = e.target.closest('[data-mes]'); if (b) { mes = b.dataset.mes; render(); } });
+
+  function render() {
+    const m = R.meses.find(x => x.ym === mes) || { ym: mes, viagens: [], andamento: [], dias: [], tot: {} }, t = m.tot || {};
+    const quando = new Date(R.atualizado).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', ' às');
+    $('nome').textContent = R.nome;
+    $('info').textContent = [R.unidade, `Atualizado em ${quando}`].filter(Boolean).join(' · ');
+    $('meses').innerHTML = R.meses.map(x => `<button type="button" data-mes="${x.ym}" aria-pressed="${x.ym === mes}">${nomeMes(x.ym)}</button>`).join('');
+    document.querySelectorAll('nav [data-aba]').forEach(b => b.setAttribute('aria-selected', b.dataset.aba === aba));
+    const mesTxt = m.ym ? MESES[+m.ym.slice(5, 7) - 1].toLowerCase() : '';
+    let html = '';
+    if (aba === 'viagens') {
+      $('totL').textContent = `Alimentação em ${mesTxt}`;
+      $('total').textContent = brl(t.valor);
+      $('totS').textContent = `${t.viagens || 0} viage${t.viagens === 1 ? 'm' : 'ns'} · ${t.refeicoes || 0} refeições · Café ${t.cafe || 0} · Almoço ${t.almoco || 0} · Janta ${t.janta || 0}`;
+      html = m.viagens.length ? m.viagens.map(v => `<div class="viagem">
+          <div class="linha"><span class="mono">${esc(v.saida)} → ${esc(v.chegada)}${v.conferir ? ' *' : ''}</span><span class="mono" style="white-space:nowrap">${brl(v.valor)}</span></div>
+          <span class="mut">${esc(v.veiculo)} · Fábrica ${esc(v.fabrica)}</span>
+          <div class="ref"><div><small>Café</small><b>${v.cafe}</b></div><div><small>Almoço</small><b>${v.almoco}</b></div><div><small>Janta</small><b>${v.janta}</b></div></div></div>`).join('')
+        : '<div class="vazio">Nenhuma viagem neste mês.</div>';
+      if (m.viagens.some(v => v.conferir)) html += '<p class="nota">* Confira o horário de chegada desta viagem.</p>';
+      if (m.andamento.length) html += `<div class="aviso">Em andamento (entra no próximo resumo): saída ${m.andamento.map(a => esc(a.saida)).join(', ')}.</div>`;
+      $('nota').textContent = `Café 02h–11h · Almoço 11h–18h · Janta 18h–02h · ${brl(R.valorRefeicao)} por refeição`;
+    } else {
+      $('totL').textContent = `Domingos e feriados em ${mesTxt}`;
+      $('total').textContent = brl(t.valorDias);
+      $('totS').textContent = `${t.dias || 0} dia${t.dias === 1 ? '' : 's'} · Domingos ${t.domingos || 0} · Feriados ${t.feriados || 0} · ${brl(R.valorDia)} por dia`;
+      html = m.dias.length ? `<div class="dias">${m.dias.map(d => `<div class="dia"><div>
+          <span class="mono">${esc(d.data)} · ${esc(d.dia)}</span><span class="mut">${esc(d.motivo)}</span>
+          <span class="mut" style="font-size:13px">Jornada ${esc(d.jornada)}${d.horas ? ' · ' + esc(d.horas) : ''}</span></div>
+          <span class="mono" style="white-space:nowrap">${brl(d.valor)}</span></div>`).join('')}</div>`
+        : '<div class="vazio">Nenhum domingo ou feriado trabalhado neste mês.</div>';
+      $('nota').textContent = 'Conta o domingo ou feriado com jornada em qualquer horário do dia, uma vez por dia.';
+    }
+    $('lista').innerHTML = html;
+    const tel = String(R.contato || '').replace(/\D/g, '');
+    const fone = tel.length === 10 || tel.length === 11 ? '55' + tel : tel;
+    $('whats').hidden = fone.length < 12;
+    $('whats').textContent = aba === 'viagens' ? 'Falar com a logística' : 'Faltou algum dia? Falar com a logística';
+    $('whats').href = `https://wa.me/${fone}?text=${encodeURIComponent(`Olá, sou ${R.nome}. Sobre o resumo de ${m.ym ? nomeMes(m.ym) : ''}: `)}`;
+  }
+
+  const salvo = lido();
+  if (salvo && salvo.cpf && salvo.nasc) { $('lembrar').checked = true; entrar(salvo.cpf, salvo.nasc, true, true); }
+})();
+</script>
+</body>
+</html>
