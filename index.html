@@ -37,14 +37,14 @@ form{display:flex;flex-direction:column;gap:18px;background:var(--card);border:1
 header{background:var(--head);color:#fff;padding:14px 18px 16px;display:flex;flex-direction:column;gap:10px;padding-top:max(14px,env(safe-area-inset-top))}
 header .topo{display:flex;justify-content:space-between;align-items:center}
 header .eyebrow{color:#f0a39b}
-#sair{background:none;border:0;color:#fff;font-weight:600;font-size:15px;min-height:44px;padding:0 4px;cursor:pointer}
+#sair,.hbtn{background:none;border:0;color:#fff;font-weight:600;font-size:15px;min-height:44px;padding:0 4px;cursor:pointer}
 #nome{font-size:28px}
 .sub{font-size:14px;color:#d6d1cc}
 #meses{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
 #meses button{flex:none;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid #6b6560;background:transparent;color:#fff;font-weight:600;font-size:15px;cursor:pointer}
 #meses button[aria-pressed=true]{background:#fff;color:var(--head);border-color:#fff;font-weight:700}
 nav{display:flex;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
-nav button{flex:1;padding:14px 6px;font-weight:600;font-size:16px;color:var(--mut);background:none;border:0;border-bottom:3px solid transparent;cursor:pointer;min-height:48px}
+nav button{flex:1;padding:10px 4px;font-weight:600;font-size:15px;line-height:1.2;color:var(--mut);background:none;border:0;border-bottom:3px solid transparent;cursor:pointer;min-height:48px}
 nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-color:var(--acc)}
 #conteudo{padding:18px 16px calc(28px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px}
 .tot{background:var(--head);color:#fff;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
@@ -66,6 +66,14 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
 .dia:last-child{border-bottom:0}
 .dia>div{display:flex;flex-direction:column;gap:2px;min-width:0}
 .vazio{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 16px;color:var(--mut);text-align:center}
+.mesC{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;text-align:left;font:inherit;color:inherit;width:100%;cursor:pointer}
+.mesC.acum{background:var(--soft);border-color:#c9c4be;cursor:default}
+.mesC h2{margin:0;font-family:var(--fd);font-weight:700;font-size:20px}
+.filtros{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.filtros .campo:last-child{grid-column:1/-1}
+.filtros select{font:500 16px var(--fb);padding:10px;border:1px solid #c9c4be;border-radius:10px;background:var(--card);color:var(--fg);min-height:46px;width:100%}
+.motC{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;text-align:left;font:inherit;color:inherit;width:100%;cursor:pointer}
+.motC strong{font-family:var(--fd);font-size:19px}
 .nota{margin:0;font-size:13px;color:var(--mut);text-align:center}
 .carregando{color:var(--mut);text-align:center;margin:0}
 </style>
@@ -86,6 +94,24 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
       <button class="btn" id="entrar" type="submit">Entrar</button>
     </form>
     <p class="nota">Problemas para entrar? Fale com a logística.</p>
+    <button type="button" id="modoAdm" class="nota" style="background:none;border:0;text-decoration:underline;cursor:pointer;min-height:44px;color:var(--mut)">Sou administrador</button>
+  </section>
+
+  <section id="admin" hidden>
+    <header>
+      <div class="topo"><span class="eyebrow">Pau Brasil · Puxada</span><button id="aSair" type="button" class="hbtn">Sair</button></div>
+      <div style="display:flex;flex-direction:column;gap:2px"><h1 style="font-size:28px">Administrador</h1><span class="sub" id="aInfo"></span></div>
+    </header>
+    <div id="conteudoA" style="padding:16px;display:flex;flex-direction:column;gap:14px">
+      <div class="filtros">
+        <div class="campo"><label for="aMes">Mês</label><select id="aMes"></select></div>
+        <div class="campo"><label for="aUni">Unidade</label><select id="aUni"></select></div>
+        <div class="campo"><label for="aMot">Motorista</label><select id="aMot"></select></div>
+      </div>
+      <div class="tot"><span class="l" id="aTotL"></span><span id="aTotal" style="font-family:var(--fd);font-weight:700;font-size:38px;line-height:1.1"></span><span class="sm" id="aTotS"></span></div>
+      <div id="aLista" style="display:flex;flex-direction:column;gap:12px"></div>
+      <p class="nota">Toque num motorista para ver o resumo dele.</p>
+    </div>
   </section>
 
   <section id="resumo" hidden>
@@ -97,6 +123,7 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
     <nav role="tablist">
       <button type="button" role="tab" data-aba="viagens" aria-selected="true">Viagens e alimentação</button>
       <button type="button" role="tab" data-aba="domingos" aria-selected="false">Domingos e feriados</button>
+      <button type="button" role="tab" data-aba="consolidado" aria-selected="false">Consolidado</button>
     </nav>
     <div id="conteudo">
       <div class="tot"><span class="l" id="totL"></span><span id="total"></span><span class="sm" id="totS"></span></div>
@@ -170,12 +197,12 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
   const CHAVE = 'resumo.login';
   const guardar = v => { try { v ? localStorage.setItem(CHAVE, JSON.stringify(v)) : localStorage.removeItem(CHAVE); } catch (e) {} };
   const lido = () => { try { return JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch (e) { return null; } };
-  let R = null, mes = null, aba = 'viagens';
+  let R = null, mes = null, aba = 'viagens', ADM = null, modoAdm = false;
 
   // máscaras
   const mascara = (el, f) => el.addEventListener('input', () => { el.value = f(el.value.replace(/\D/g, '')); });
   mascara($('cpf'), d => d.slice(0, 11).replace(/^(\d{3})(\d)/, '$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d)/, '.$1-$2'));
-  mascara($('nasc'), d => d.slice(0, 8).replace(/^(\d{2})(\d)/, '$1/$2').replace(/^(\d{2})\/(\d{2})(\d)/, '$1/$2/$3'));
+  $('nasc').addEventListener('input', () => { if (modoAdm) return; const el = $('nasc'), d = el.value.replace(/\D/g, ''); el.value = d.slice(0, 8).replace(/^(\d{2})(\d)/, '$1/$2').replace(/^(\d{2})\/(\d{2})(\d)/, '$1/$2/$3'); });
 
   async function abrirResumo(cpf, nasc) {
     const cfgR = await fetch(`dados/config.json?v=${Date.now()}`, { cache: 'no-store' });
@@ -187,25 +214,70 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
     if (!r.ok) throw new Error('indisponivel');
     try { return await CRIPTO.decifrar(await r.json(), key); } catch (e) { throw new Error('nao_confere'); }
   }
+  function trocarModo(adm) {
+    modoAdm = adm; const n = $('nasc');
+    document.querySelector('label[for="nasc"]').textContent = adm ? 'Senha' : 'Data de nascimento';
+    n.type = adm ? 'password' : 'text'; n.inputMode = adm ? 'text' : 'numeric'; n.placeholder = adm ? '' : 'dd/mm/aaaa'; n.maxLength = adm ? 64 : 10; n.value = '';
+    $('modoAdm').textContent = adm ? 'Sou motorista' : 'Sou administrador'; $('erro').textContent = '';
+  }
+  $('modoAdm').addEventListener('click', () => trocarModo(!modoAdm));
   async function entrar(cpfTxt, nascTxt, lembrar, auto) {
-    const cpf = CRIPTO.normCpf(cpfTxt), nasc = CRIPTO.normNasc(nascTxt);
+    const cpf = CRIPTO.normCpf(cpfTxt), adm = modoAdm, nasc = adm ? (nascTxt ? 'adm:' + nascTxt : null) : CRIPTO.normNasc(nascTxt);
     $('erro').textContent = '';
     if (!cpf) { $('erro').textContent = 'Confira o CPF.'; return; }
-    if (!nasc) { $('erro').textContent = 'Digite a data de nascimento como dd/mm/aaaa.'; return; }
+    if (!nasc) { $('erro').textContent = adm ? 'Digite a senha.' : 'Digite a data de nascimento como dd/mm/aaaa.'; return; }
     $('entrar').disabled = true; $('entrar').textContent = 'Entrando…';
     try {
-      R = await abrirResumo(cpf, nasc);
-      if (lembrar) guardar({ cpf, nasc });
-      mes = R.meses.length ? R.meses[R.meses.length - 1].ym : null; aba = 'viagens';
-      $('login').hidden = true; $('resumo').hidden = false; render(); window.scrollTo(0, 0);
+      const dados = await abrirResumo(cpf, nasc);
+      if (lembrar) guardar({ cpf, nasc: nascTxt, adm });
+      $('login').hidden = true;
+      if (dados.admin) { ADM = dados; montarAdm(); $('admin').hidden = false; window.scrollTo(0, 0); return; }
+      ADM = null; abrirMotorista(dados);
     } catch (e) {
       if (auto && e.message === 'nao_confere') guardar(null);
-      $('erro').textContent = e.message === 'nao_confere' ? 'CPF ou data de nascimento não conferem.' : 'Não foi possível carregar agora. Confira a internet e tente de novo.';
+      $('erro').textContent = e.message === 'nao_confere' ? (adm ? 'CPF ou senha não conferem.' : 'CPF ou data de nascimento não conferem.') : 'Não foi possível carregar agora. Confira a internet e tente de novo.';
     } finally { $('entrar').disabled = false; $('entrar').textContent = 'Entrar'; }
   }
   $('form').addEventListener('submit', e => { e.preventDefault(); entrar($('cpf').value, $('nasc').value, $('lembrar').checked); });
-  $('sair').addEventListener('click', () => { guardar(null); R = null; $('cpf').value = ''; $('nasc').value = ''; $('lembrar').checked = false; $('erro').textContent = ''; $('resumo').hidden = true; $('login').hidden = false; });
+  function abrirMotorista(res) {
+    R = res; mes = R.meses.length ? R.meses[R.meses.length - 1].ym : null; aba = 'viagens';
+    $('sair').textContent = ADM ? 'Voltar' : 'Sair';
+    $('admin').hidden = true; $('resumo').hidden = false; render(); window.scrollTo(0, 0);
+  }
+  // ===== administrador =====
+  const somaTot = (r, ym) => (ym ? r.meses.filter(m => m.ym === ym) : r.meses).reduce((a, m) => { const t = m.tot || {}; return { valor: a.valor + (+t.valor || 0), valorDias: a.valorDias + (+t.valorDias || 0), dias: a.dias + (+t.dias || 0), viagens: a.viagens + (+t.viagens || 0) }; }, { valor: 0, valorDias: 0, dias: 0, viagens: 0 });
+  function montarAdm() {
+    const meses = [...new Set(ADM.motoristas.flatMap(r => r.meses.map(m => m.ym)))].sort().reverse();
+    const unis = [...new Set(ADM.motoristas.map(r => r.unidade).filter(Boolean))].sort();
+    $('aMes').innerHTML = '<option value="">Todos (acumulado)</option>' + meses.map(m => `<option value="${m}">${nomeMes(m)}</option>`).join('');
+    $('aUni').innerHTML = '<option value="">Todas</option>' + unis.map(u => `<option value="${esc(u)}">${esc(u)}</option>`).join('');
+    renderAdm();
+  }
+  function renderAdm() {
+    const ym = $('aMes').value, uni = $('aUni').value, motSel = $('aMot').value;
+    const daUni = ADM.motoristas.filter(r => !uni || r.unidade === uni);
+    $('aMot').innerHTML = '<option value="">Todos</option>' + daUni.map(r => r.nome).sort().map(n => `<option value="${esc(n)}"${n === motSel ? ' selected' : ''}>${esc(n)}</option>`).join('');
+    const lista = daUni.filter(r => !$('aMot').value || r.nome === $('aMot').value).map(r => ({ r, t: somaTot(r, ym) })).sort((a, b) => (b.t.valor + b.t.valorDias) - (a.t.valor + a.t.valorDias) || a.r.nome.localeCompare(b.r.nome));
+    const g = lista.reduce((a, x) => ({ valor: a.valor + x.t.valor, valorDias: a.valorDias + x.t.valorDias }), { valor: 0, valorDias: 0 });
+    const quando = new Date(ADM.atualizado).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', ' às');
+    $('aInfo').textContent = `${ADM.motoristas.length} motoristas · Atualizado em ${quando}`;
+    $('aTotL').textContent = `${ym ? nomeMes(ym) : 'Acumulado'} · ${lista.length} motorista${lista.length === 1 ? '' : 's'}`;
+    $('aTotal').textContent = brl(g.valor + g.valorDias);
+    $('aTotS').textContent = `Alimentação ${brl(g.valor)} · Domingos e feriados ${brl(g.valorDias)}`;
+    $('aLista').innerHTML = lista.length ? lista.map(x => `<button type="button" class="motC" data-i="${ADM.motoristas.indexOf(x.r)}">
+        <div class="linha"><strong>${esc(x.r.nome)}</strong><span class="mono" style="white-space:nowrap">${brl(x.t.valor + x.t.valorDias)}</span></div>
+        <div class="linha"><span class="mut">${esc(x.r.unidade || '')} · Alimentação (${x.t.viagens} viage${x.t.viagens === 1 ? 'm' : 'ns'})</span><span class="mono" style="white-space:nowrap">${brl(x.t.valor)}</span></div>
+        <div class="linha"><span class="mut">Domingos e feriados (${x.t.dias} dia${x.t.dias === 1 ? '' : 's'})</span><span class="mono" style="white-space:nowrap">${brl(x.t.valorDias)}</span></div></button>`).join('')
+      : '<div class="vazio">Nenhum motorista com esses filtros.</div>';
+  }
+  for (const id of ['aMes', 'aUni', 'aMot']) $(id).addEventListener('change', renderAdm);
+  $('aLista').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) abrirMotorista(ADM.motoristas[+b.dataset.i]); });
+  $('aSair').addEventListener('click', () => { ADM = null; $('sair').click(); });
+  $('sair').addEventListener('click', () => {
+    if (ADM) { R = null; $('resumo').hidden = true; $('admin').hidden = false; renderAdm(); return; }
+    guardar(null); R = null; $('admin').hidden = true; if (modoAdm) trocarModo(false); $('cpf').value = ''; $('nasc').value = ''; $('lembrar').checked = false; $('erro').textContent = ''; $('resumo').hidden = true; $('login').hidden = false; });
   document.querySelector('nav').addEventListener('click', e => { const b = e.target.closest('[data-aba]'); if (b) { aba = b.dataset.aba; render(); } });
+  $('lista').addEventListener('click', e => { const b = e.target.closest('[data-ir]'); if (b) { mes = b.dataset.ir; aba = 'viagens'; render(); window.scrollTo(0, 0); } });
   $('meses').addEventListener('click', e => { const b = e.target.closest('[data-mes]'); if (b) { mes = b.dataset.mes; render(); } });
 
   function render() {
@@ -217,7 +289,23 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
     document.querySelectorAll('nav [data-aba]').forEach(b => b.setAttribute('aria-selected', b.dataset.aba === aba));
     const mesTxt = m.ym ? MESES[+m.ym.slice(5, 7) - 1].toLowerCase() : '';
     let html = '';
-    if (aba === 'viagens') {
+    $('meses').hidden = aba === 'consolidado';
+    if (aba === 'consolidado') {
+      const sum = (f) => R.meses.reduce((a, x) => a + (+f(x.tot || {}) || 0), 0);
+      const vA = sum(t => t.valor), vD = sum(t => t.valorDias);
+      $('totL').textContent = `Acumulado desde ${R.meses.length ? nomeMes(R.meses[0].ym).toLowerCase() : ''}`;
+      $('total').textContent = brl(vA + vD);
+      $('totS').textContent = `Alimentação ${brl(vA)} · Domingos e feriados ${brl(vD)}`;
+      const card = (x, acum) => { const t = x.tot || {};
+        return `<${acum ? 'div' : 'button type="button"'} class="mesC${acum ? ' acum' : ''}"${acum ? '' : ` data-ir="${x.ym}"`}>
+          <div class="linha"><h2>${acum ? 'Acumulado' : nomeMes(x.ym)}</h2><span class="mono" style="white-space:nowrap;font-size:18px">${brl((+t.valor || 0) + (+t.valorDias || 0))}</span></div>
+          <div class="linha"><span class="mut">Alimentação · ${t.viagens || 0} viage${t.viagens === 1 ? 'm' : 'ns'}, ${t.refeicoes || 0} refeições</span><span class="mono" style="white-space:nowrap">${brl(t.valor)}</span></div>
+          <div class="linha"><span class="mut">Domingos e feriados · ${t.dias || 0} dia${t.dias === 1 ? '' : 's'}</span><span class="mono" style="white-space:nowrap">${brl(t.valorDias)}</span></div>
+        </${acum ? 'div' : 'button'}>`; };
+      const tot = ['viagens', 'refeicoes', 'valor', 'dias', 'valorDias'].reduce((o, k) => (o[k] = sum(t => t[k]), o), {});
+      html = [...R.meses].reverse().map(x => card(x, false)).join('') + card({ tot }, true);
+      $('nota').textContent = 'Toque num mês para ver as viagens daquele mês.';
+    } else if (aba === 'viagens') {
       $('totL').textContent = `Alimentação em ${mesTxt}`;
       $('total').textContent = brl(t.valor);
       $('totS').textContent = `${t.viagens || 0} viage${t.viagens === 1 ? 'm' : 'ns'} · ${t.refeicoes || 0} refeições · Café ${t.cafe || 0} · Almoço ${t.almoco || 0} · Janta ${t.janta || 0}`;
@@ -243,13 +331,13 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
     $('lista').innerHTML = html;
     const tel = String(R.contato || '').replace(/\D/g, '');
     const fone = tel.length === 10 || tel.length === 11 ? '55' + tel : tel;
-    $('whats').hidden = fone.length < 12;
-    $('whats').textContent = aba === 'viagens' ? 'Falar com a logística' : 'Faltou algum dia? Falar com a logística';
-    $('whats').href = `https://wa.me/${fone}?text=${encodeURIComponent(`Olá, sou ${R.nome}. Sobre o resumo de ${m.ym ? nomeMes(m.ym) : ''}: `)}`;
+    $('whats').hidden = fone.length < 12 || !!ADM;
+    $('whats').textContent = aba === 'domingos' ? 'Faltou algum dia? Falar com a logística' : 'Falar com a logística';
+    $('whats').href = `https://wa.me/${fone}?text=${encodeURIComponent(`Olá, sou ${R.nome}. Sobre o resumo ${aba === 'consolidado' ? 'acumulado' : 'de ' + (m.ym ? nomeMes(m.ym) : '')}: `)}`;
   }
 
   const salvo = lido();
-  if (salvo && salvo.cpf && salvo.nasc) { $('lembrar').checked = true; entrar(salvo.cpf, salvo.nasc, true, true); }
+  if (salvo && salvo.cpf && salvo.nasc) { if (salvo.adm) trocarModo(true); $('lembrar').checked = true; entrar(salvo.cpf, salvo.nasc, true, true); }
 })();
 </script>
 </body>
