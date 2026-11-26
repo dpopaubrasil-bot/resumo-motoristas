@@ -313,13 +313,14 @@ nav button[aria-selected=true]{color:var(--fg);font-weight:700;border-bottom-col
     } else if (aba === 'viagens') {
       $('totL').textContent = `Alimentação em ${mesTxt}`;
       $('total').textContent = brl(t.valor);
-      $('totS').textContent = `${t.viagens || 0} viage${t.viagens === 1 ? 'm' : 'ns'} · ${t.refeicoes || 0} refeições · Café ${t.cafe || 0} · Almoço ${t.almoco || 0} · Janta ${t.janta || 0}`;
+      $('totS').textContent = `${t.viagens || 0} viage${t.viagens === 1 ? 'm' : 'ns'} · ${t.refeicoes || 0} refeições · Café ${t.cafe || 0} · Almoço ${t.almoco || 0} · Janta ${t.janta || 0}${m.fechado ? ' · Mês fechado' : ''}`;
       html = m.viagens.length ? m.viagens.map(v => `<div class="viagem">
-          <div class="linha"><span class="mono">${esc(v.saida)} → ${esc(v.chegada)}${v.conferir ? ' *' : ''}</span><span class="mono" style="white-space:nowrap">${brl(v.valor)}</span></div>
-          <span class="mut">${esc(v.veiculo)} · Fábrica ${esc(v.fabrica)}</span>
+          <div class="linha"><span class="mono">${esc(v.saida)} → ${v.estimada ? 'em viagem' : esc(v.chegada)}${v.conferir ? ' *' : ''}</span><span class="mono" style="white-space:nowrap">${brl(v.valor)}</span></div>
+          <span class="mut">${esc(v.veiculo)} · Fábrica ${esc(v.fabrica)}</span>${v.estimada ? '<span class="mut" style="color:var(--acc);font-weight:600">em viagem · estimada até o fim do mês</span>' : ''}
           <div class="ref"><div><small>Café</small><b>${v.cafe}</b></div><div><small>Almoço</small><b>${v.almoco}</b></div><div><small>Janta</small><b>${v.janta}</b></div></div></div>`).join('')
         : '<div class="vazio">Nenhuma viagem neste mês.</div>';
       if (m.viagens.some(v => v.conferir)) html += '<p class="nota">* Confira o horário de chegada desta viagem.</p>';
+      if (m.viagens.some(v => v.estimada)) html += '<p class="nota">Viagem estimada: entrou no fechamento com as refeições até o fim do mês. Quando ela terminar, a diferença vem como refeições extras no mês seguinte.</p>';
       if (m.andamento.length) html += `<div class="aviso">Em andamento (entra no próximo resumo): saída ${m.andamento.map(a => esc(a.saida)).join(', ')}.</div>`;
       $('nota').textContent = `Café 02h–11h · Almoço 11h–18h · Janta 18h–02h · ${brl(R.valorRefeicao)} por refeição`;
     } else {
